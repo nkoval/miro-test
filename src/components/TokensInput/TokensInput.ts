@@ -53,6 +53,7 @@ class TokensInput {
     private tokens: Token[] = [];
     private inputEl!: HTMLInputElement;
     private isCtrl = false;
+    private isVKey = false;
 
     constructor(private containerEl: HTMLElement, options: TokensInputOptions={}, initValue?: string | string[]) {
         if (!this.containerEl) {
@@ -133,6 +134,7 @@ class TokensInput {
         const delimiters= this.options.delimiters!;
 
         this.isCtrl = ctrlKey || metaKey;
+        this.isVKey = key === 'v';
 
         if (delimiters.indexOf(key) !== -1 || delimiters.indexOf(code) !== -1 || delimiters.indexOf(char) !== -1) {
             this.processInputElValue();
@@ -143,7 +145,7 @@ class TokensInput {
     private onInputKeyUp(event: KeyboardEvent) {
         const {key}  = event;
 
-        if (this.isCtrl && key === 'v') {
+        if (this.isCtrl && (key === 'v' || this.isVKey)) {
             this.onBufferInsert()
         }
     }

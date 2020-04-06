@@ -19,6 +19,7 @@ declare class TokensInput {
     private tokens;
     private inputEl;
     private isCtrl;
+    private isVKey;
     constructor(containerEl: HTMLElement, options?: TokensInputOptions, initValue?: string | string[]);
     private init;
     private render;

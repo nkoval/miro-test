@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Miro test</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <script src="lib/components/TokensInput/TokensInput.js" ></script>
+    <link type="text/css" href="lib/components/TokensInput/TokensInput.css" rel="stylesheet">
+    <link type="text/css" href="lib/components/Card/Card.css" rel="stylesheet">
+    <link type="text/css" href="lib/components/Button/Button.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="card">
+    <h2 class="card__title">Share the post with others</h2>
+    <div class="card__main"><div id="emails-input"></div></div>
+    <div class="card__actions">
+        <button id="add-email" class="button">Add email</button>
+        <button id="get-emails-count" class="button">Get emails count</button>
+    </div>
+</div>
+
+<script>
+    let emailsInputContainer = document.querySelector('#emails-input'),
+        addEmail = document.querySelector('#add-email'),
+        getEmailsCount = document.querySelector('#get-emails-count');
+
+    emailsInputContainer.addEventListener('tokens-input.ready', function(event) {console.log('TokensInput is ready', event)});
+
+    let emailsInput = new TokensInput(emailsInputContainer, {
+        delimiters: [',', ';', ' ', 'Enter'],
+        validator: /(.+)@(.+){2,}\.(.+){2,}/
+    }, 'koval.nikolay@gmail.com, test@email.com, invalid.email');
+
+    emailsInputContainer.addEventListener('tokens-input.update', function(event) { console.log('TokensInput was just updated', event) });
+
+    addEmail.addEventListener('click', function(event) {
+        const randomEmails = ['zeller@mac.com', 'yxing@hotmail.com', 'itstatus@msn.com', 'jaxweb@msn.com', 'monopole@gmail.com', 'esbeck@msn.com', 'gfxguy@gmail.com', 'mcsporran@mac.com', 'terjesa@yahoo.com', 'chlim@sbcglobal.net', 'maradine@outlook.com', 'mfleming@aol.com'];
+        const email = randomEmails[Math.floor(Math.random() * randomEmails.length)];
+        emailsInput.add(email);
+    });
+
+    getEmailsCount.addEventListener('click', function(event) {
+        const emails = emailsInput.getAll();
+        alert(emails.length);
+    });
+
+</script>
+</body>
+</html>

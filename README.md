@@ -42,6 +42,8 @@ Eg. `token1,token2,token3` is good but `token1,token2;token3` is not
 * `add(string | string[])` - Adds tokens to the component
 * `remove(number)` - Removes the n'th token
 * `replaceAllWith(string | string[])` - Replaces all existing tokens with new ones
+* `toString()` - Returns a string representation of the component's content. Uses `,` as a delimiter
+* `destroy()` - Destroys the component and returns the container to its original state
 
 ## Events
 `TokensInput` emits the following events:

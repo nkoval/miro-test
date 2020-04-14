@@ -15,7 +15,9 @@ declare class TokensInput {
     replaceAllWith(value: string | string[]): void;
     remove(indexToRemove: number): void;
     getAll(): Token[];
+    destroy(): void;
     private readonly options;
+    private destroyed;
     private tokens;
     private inputEl;
     private isCtrl;

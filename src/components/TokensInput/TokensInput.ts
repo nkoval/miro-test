@@ -45,11 +45,26 @@ class TokensInput {
         return TokensInput.makeDeepCopyOf(this.tokens);
     }
 
+    public destroy() {
+        this.containerEl.classList.remove('tokens-input');
+
+        this.tokens = [];
+        this.containerEl.innerHTML = '';
+
+        this.inputEl.removeEventListener('keydown', this.onInputKeyDown);
+        this.inputEl.removeEventListener('keyup', this.onInputKeyUp);
+        this.inputEl.removeEventListener('blur', this.onInputBlur);
+        this.containerEl.removeEventListener('click', this.setupClickEventDelegation);
+
+        this.destroyed = true;
+    }
+
     private readonly options: TokensInputOptions = {
         delimiters: [',', 'Enter'],
         inputPlaceholder: 'add more people...',
     };
 
+    private destroyed = false;
     private tokens: Token[] = [];
     private inputEl!: HTMLInputElement;
     private isCtrl = false;
@@ -68,6 +83,11 @@ class TokensInput {
         if (initValue) {
             this.tokens = this.parseInputValue(initValue);
         }
+
+        this.onInputKeyDown = this.onInputKeyDown.bind(this);
+        this.onInputKeyUp = this.onInputKeyUp.bind(this);
+        this.onInputBlur = this.onInputBlur.bind(this);
+        this.setupClickEventDelegation = this.setupClickEventDelegation.bind(this);
 
         this.init();
     }
@@ -123,10 +143,10 @@ class TokensInput {
     }
 
     private attachEvents() {
-        this.inputEl.addEventListener('keydown', this.onInputKeyDown.bind(this));
-        this.inputEl.addEventListener('keyup', this.onInputKeyUp.bind(this));
-        this.inputEl.addEventListener('blur', this.onInputBlur.bind(this));
-        this.containerEl.addEventListener('click', this.setupClickEventDelegation.bind(this));
+        this.inputEl.addEventListener('keydown', this.onInputKeyDown);
+        this.inputEl.addEventListener('keyup', this.onInputKeyUp);
+        this.inputEl.addEventListener('blur', this.onInputBlur);
+        this.containerEl.addEventListener('click', this.setupClickEventDelegation);
     }
 
     private onInputKeyDown(event: KeyboardEvent) {
@@ -241,6 +261,10 @@ class TokensInput {
     }
 
     private updateTokens(newValue: Token[], action: string) {
+        if (this.destroyed) {
+            throw new Error('The component has been destroyed and can\'t be used anymore');
+        }
+
         const oldValue = this.tokens;
         this.removeAllTokensEl();
         this.tokens = newValue;

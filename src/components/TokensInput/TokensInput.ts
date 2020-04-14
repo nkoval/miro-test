@@ -45,6 +45,10 @@ class TokensInput {
         return TokensInput.makeDeepCopyOf(this.tokens);
     }
 
+    public toString() {
+        return this.tokens.map( token => token.value ).join(', ');
+    }
+
     public destroy() {
         this.containerEl.classList.remove('tokens-input');
 
